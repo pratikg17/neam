@@ -61,7 +61,7 @@ angular.module("userControllers", ['userServices'])
             //error 
             app.errorMsg = "Google email not found in database";
         } else {
-            console.log("IN SUCCESS");
+
             Auth.google($routeParams.token);
             $location.path('/');
         }

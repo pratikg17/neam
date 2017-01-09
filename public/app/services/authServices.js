@@ -30,20 +30,18 @@ angular
         // Auth.facebook();
         authFactory.facebook = function(token) {
 
-            AuthToken.setToken('token', token);
+            AuthToken.setToken(token);
 
         };
 
         authFactory.google = function(token) {
-            console.log("IN TOKEN SET", token);
-
-            AuthToken.setToken('token', token);
+            AuthToken.setToken(token);
 
         };
 
         authFactory.twitter = function(token) {
 
-            AuthToken.setToken('token', token);
+            AuthToken.setToken(token);
 
         };
 
@@ -68,6 +66,7 @@ angular
         authTokenFactory.setToken = function(token) {
 
             if (token) {
+
                 $window
                     .localStorage
                     .setItem('token', token);
@@ -79,6 +78,7 @@ angular
         }
 
         authTokenFactory.getToken = function() {
+
             return $window
                 .localStorage
                 .getItem('token');

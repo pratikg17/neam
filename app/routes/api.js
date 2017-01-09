@@ -68,14 +68,21 @@ module.exports = function(router) {
     router.use(function(req, res, next) {
 
         var token = req.body.token || req.body.query || req.headers['x-access-token'];
+
+        console.log("TOKEN IN BODY", req.body.token);
+        console.log("TOKEN IN QUERY", req.body.query);
+        console.log("TOKEN IN HEADER", req.headers['x-access-token']);
+
         console.log("TOKEN IS HERE", token);
         if (token) {
             //verify token
             jwt
                 .verify(token, secret, function(err, decoded) {
                     if (err) {
-                        res.json({ success: false, message: "Token Invalid" })
+                        res.json({ success: false, message: "Token Invalid" });
                     } else {
+
+                        console.log("IN SUCCESS TOKEN");
                         req.decoded = decoded;
                         next();
                     }

@@ -21,11 +21,14 @@ module.exports = function(app, passport) {
     }))
 
     passport.serializeUser(function(user, done) {
+
+
+
         token = jwt.sign({
             username: user.username,
             email: user.email
         }, secret, { expiresIn: '24h' });
-
+        console.log("SERIALIZE TOKEN", token);
         done(null, user.id);
     });
 
@@ -100,6 +103,7 @@ module.exports = function(app, passport) {
                     done(err);
 
                 if (user && user != null) {
+                    console.log("USER DATA FIND", user);
                     done(null, user);
                 } else {
                     done(err);
