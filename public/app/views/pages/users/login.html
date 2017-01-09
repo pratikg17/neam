@@ -1,0 +1,74 @@
+<div class="page-header">
+
+    <h1>User Login</h1>
+
+</div>
+
+
+<form ng-submit="main.doLogin(loginData)">
+
+    <!--USERNAME-->
+    <label>Username:</label>
+    <input class="form-control" type="text" name="username" placeholder="Please Enter Username" ng-model="main.loginData.username">
+    <!--Password-->
+    <label>Password:</label>
+    <input class="form-control" type="password" name="password" placeholder="Please Enter Password" ng-model="main.loginData.password">
+    <br>
+    <button class="btn btn-primary" type="submit">Login</button>&nbsp;
+
+
+</form>
+<div class="page-header">
+    <button class="btn btn-success" ng-click="main.facebook();"> Login via Facebook</button> &nbsp;
+    <button class="btn btn-danger" ng-click="main.twitter();"> Login via Twitter</button> &nbsp;
+    <button class="btn btn-danger" ng-click="main.google();"> Login via Google</button>
+</div>
+
+
+<br>
+<div class="jumbotron text-center" ng-show="main.loading">
+    <span class="glyphicon glyphicon-repeat spinner">
+        <p>Loading....</p>
+    </span>
+</div>
+<br>
+<div class="row show-hide-message" ng-show="main.successMsg">
+
+    <div class="alert alert-success">
+        {{main.successMsg}}
+    </div>
+
+</div>
+<br>
+<div class="row show-hide-message" ng-show="main.errorMsg">
+
+    <div class="alert alert-danger">
+        {{main.errorMsg}}
+    </div>
+
+</div>
+
+
+<div class="row show-hide-message" ng-show="facebook.errorMsg">
+
+    <div class="alert alert-danger">
+        {{facebook.errorMsg}}
+    </div>
+
+</div>
+
+<div class="row show-hide-message" ng-show="twitter.errorMsg">
+
+    <div class="alert alert-danger">
+        {{twitter.errorMsg}}
+    </div>
+
+</div>
+
+<div class="row show-hide-message" ng-show="google.errorMsg">
+
+    <div class="alert alert-danger">
+        {{google.errorMsg}}
+    </div>
+
+</div>
