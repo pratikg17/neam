@@ -11,19 +11,48 @@ module.exports = function(router) {
             user.username = req.body.username;
             user.password = req.body.password;
             user.email = req.body.email;
+            user.name = req.body.name;
 
-            if (req.body.username == null || req.body.username == "" || req.body.password == null || req.body.password == "" || req.body.email == null || req.body.email == "") {
-                res.json({ success: false, message: "Ensure username,email and password were provided" });
+            if (req.body.username == null || req.body.username == "" || req.body.password == null || req.body.password == "" || req.body.email == null || req.body.email == "" || req.body.name == null || req.body.name == "") {
+                res.json({ success: false, message: "Ensure name, username,email and password were provided" });
 
             } else {
 
                 user
                     .save(function(err) {
                         if (err) {
-                            res.json({ success: false, message: "Username or Email Already Exists" });
-                        } else
+                            if (err.error != null) {
+                                if (err.errors.name) {
+                                    res.json({ success: false, message: err.errors.name.message });
 
+                                } else if (err.errors.email) {
+                                    res.json({ success: false, message: err.errors.email.message });
+                                } else if (err.errors.username) {
+                                    res.json({ success: false, message: err.errors.username.message });
+
+                                } else if (err.errors.password) {
+                                    res.json({ success: false, message: err.errors.password.message });
+                                } else {
+                                    res.json({ message: err, success: false });
+                                }
+                            } else if (err) {
+
+                                if (err.code == 11000) {
+                                    if (err.errmsg[61] == "u") {
+                                        res.json({ success: false, message: "Username Already taken!" });
+                                    } else if (err.errmsg[61] == "e") {
+                                        res.json({ success: false, message: "Email Already taken!" });
+
+                                    } else
+
+                                        res.json({ success: false, message: "Username or Email Already taken!" });
+                                } else
+                                    res.json({ success: false, message: err });
+                            }
+                        } else {
                             res.json({ success: true, message: "User created!" })
+                        }
+
                     });
             }
 
