@@ -3,30 +3,35 @@ angular.module("userControllers", ['userServices'])
 .controller('regCtrl', function($http, $location, $timeout, User) {
 
     var app = this;
-    this.regUser = function(regData) {
+    this.regUser = function(regData, valid) {
         app.loading = true;
         app.errorMsg = false;
         app.successMsg = false;
+        if (valid) {
+            User.create(app.regData).then(function(data) {
 
-        User.create(app.regData).then(function(data) {
+                if (data.data.success) {
+                    //Create success
+                    app.loading = false;
+                    app.successMsg = data.data.message + '....Redirecting';
 
-            if (data.data.success) {
-                //Create success
-                app.loading = false;
-                app.successMsg = data.data.message + '....Redirecting';
-
-                $timeout(function() {
-                    $location.path('/');
-                }, 2000);
+                    $timeout(function() {
+                        $location.path('/');
+                    }, 2000);
 
 
-            } else {
-                // Create Error message
-                app.loading = false;
-                app.errorMsg = data.data.message;
-            }
+                } else {
+                    // Create Error message
+                    app.loading = false;
+                    app.errorMsg = data.data.message;
+                }
 
-        });
+            });
+        } else {
+            app.loading = false;
+            app.errorMsg = "Please Ensure the Form is filled properly";
+        }
+
     };
 
 })

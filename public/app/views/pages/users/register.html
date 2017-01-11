@@ -5,30 +5,66 @@
 </div>
 
 
-<form name="regForm" ng-submit="register.regUser(regData)" novalidate>
+<form name="regForm" ng-submit="register.regUser(regData,regForm.$valid)" novalidate>
     <!--NAME-->
-    <div ng-class="{'has-success':(regForm.name.$valid && !regForm.name.$pristine) ,'has-error':(!regForm.name.$valid && !regForm.name.$pristine) || (!regForm.name.$valid && regForm.name.$submitted)}">
+    <div ng-class="{'has-success':(regForm.name.$valid && !regForm.name.$pristine) ,'has-error':(!regForm.name.$valid && !regForm.name.$pristine) || (!regForm.name.$valid && regForm.$submitted)}">
         <label>Name:</label>
-        <input class="form-control" type="text" name="name" placeholder="Please Enter Name" ng-model="register.regData.name" required>
+        <input class="form-control" type="text" name="name" placeholder="Please Enter Name" ng-model="register.regData.name" ng-pattern="/^(([a-zA-Z]{3,20})+[ ]+([a-zA-Z]{3,20})+)+$/" ng-minlength="3" ng-maxlength="25" required>
         <p class="help-block" ng-show="(!regForm.name.$pristine && regForm.name.$error.required) || (regForm.$submitted&& regForm.name.$error.required)">This field is required.</p>
+        <ul class="help-block" ng-show="(!regForm.name.$pristine && regForm.name.$error.pattern)|| (!regForm.name.$pristine && regForm.name.$error.minlength) || (!regForm.name.$pristine && regForm.name.$error.maxlength)">
+            <li>Must Have Space Between First name and Last name</li>
+            <li>Should not contain special characters</li>
+            <li>Must be atleast 3 to 25</li>
+            <li>Should not contain any number</li>
+        </ul>
+    </div>
+
+
+
+    <div ng-class="{'has-success':(regForm.email.$valid && !regForm.email.$pristine) ,'has-error':(!regForm.email.$valid && !regForm.email.$pristine) || (!regForm.email.$valid && regForm.$submitted)}">
+        <!--EMAIL-->
+        <label>Email:</label>
+        <input class="form-control" type="text" name="email" placeholder="Please Enter Email" ng-model="register.regData.email" ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;" ng-minlength="3" ng-maxlength="25" required>
+        <p class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.required) || (regForm.$submitted&& regForm.email.$error.required)">This field is required.</p>
+        <ul class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.pattern)|| (!regForm.email.$pristine && regForm.email.$error.minlength) || (!regForm.email.$pristine && regForm.email.$error.maxlength)">
+            <li>Must Have @</li>
+            <li>Should not contain special characters</li>
+            <li>Must be between 3 and 25</li>
+        </ul>
 
     </div>
-    <!--EMAIL-->
-    <label>Email:</label>
-    <input class="form-control" type="text" name="email" placeholder="Please Enter Email" ng-model="register.regData.email">
-    <!--USERNAME-->
-    <label>Username:</label>
-    <input class="form-control" type="text" name="username" placeholder="Please Enter Username" ng-model="register.regData.username">
+
+    <div ng-class="{'has-success':(regForm.username.$valid && !regForm.username.$pristine) ,'has-error':(!regForm.username.$valid && !regForm.username.$pristine) || (!regForm.username.$valid && regForm.$submitted)}">
+        <!--USERusername-->
+        <label>Username:</label>
+        <input class="form-control" type="text" name="username" placeholder="Please Enter Username" ng-model="register.regData.username" ng-pattern="/^[a-zA-Z0-9\.]*$/" ng-minlength="3" ng-maxlength="25" required>
+        <p class="help-block" ng-show="(!regForm.username.$pristine && regForm.username.$error.required) || (regForm.$submitted&& regForm.username.$error.required)">This field is required.</p>
+        <ul class="help-block" ng-show="(!regForm.username.$pristine && regForm.username.$error.pattern)|| (!regForm.username.$pristine && regForm.username.$error.minlength) || (!regForm.username.$pristine && regForm.username.$error.maxlength)">
+
+            <li>Should not contain special characters</li>
+            <li>Must be between 3 and 25</li>
+        </ul>
+    </div>
+
+    <div ng-class="{'has-success':(regForm.password.$valid && !regForm.password.$pristine) ,'has-error':(!regForm.password.$valid && !regForm.password.$pristine) || (!regForm.password.$valid && regForm.$submitted)}">
+        <label>Password:</label>
+        <input class="form-control" type="password" name="password" placeholder="Please Enter Password" ng-model="register.regData.password" ng-pattern="/^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])(?=.*?[\W]).{8,35}$/," ng-minlength="8" ng-maxlength="35" required>
+
+        <p class="help-block" ng-show="(!regForm.password.$pristine && regForm.password.$error.required) || (regForm.$submitted&& regForm.password.$error.required)">This field is required.</p>
+        <ul class="help-block" ng-show="(!regForm.password.$pristine && regForm.password.$error.pattern)|| (!regForm.password.$pristine && regForm.password.$error.minlength) || (!regForm.password.$pristine && regForm.password.$error.maxlength)">
+            <li>Must Contain one uppercase </li>
+            <li>Must Contain one lowercase </li>
+            <li>Must Contain one number </li>
+            <li>Must contain one special characters</li>
+            <li>Must be between 8 and not mpre than 35</li>
+        </ul>
+    </div>
+
     <!--Password-->
-    <label>Password:</label>
-    <input class="form-control" type="password" name="password" placeholder="Please Enter Password" ng-model="register.regData.password">
     <br>
     <button class="btn btn-primary">Register</button>
 </form>
-<span> <strong>Is this for pristine(new)</strong>{{ regForm.$pristine}}     </span><br>
-<span> <strong>Does this for has error</strong>{{ regForm.$error}}     </span><br>
-<span> <strong>Was the form submitted:</strong>{{ regForm.$submitted}}     </span><br>
-<span> <strong>Is this form valid:</strong>{{ regForm.$valid}}     </span><br>
+
 <br>
 <div class="jumbotron text-center" ng-show="register.loading">
     <span class="glyphicon glyphicon-repeat spinner">
