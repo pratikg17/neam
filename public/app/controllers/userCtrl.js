@@ -2,79 +2,108 @@ angular.module("userControllers", ['userServices'])
 
 .controller('regCtrl', function($http, $location, $timeout, User) {
 
-    var app = this;
-    this.regUser = function(regData, valid) {
-        app.loading = true;
-        app.errorMsg = false;
-        app.successMsg = false;
-        if (valid) {
-            User.create(app.regData).then(function(data) {
+        var app = this;
+        this.regUser = function(regData, valid) {
+            app.loading = true;
+            app.errorMsg = false;
+            app.successMsg = false;
+            if (valid) {
+                User.create(app.regData).then(function(data) {
+
+                    if (data.data.success) {
+                        //Create success
+                        app.loading = false;
+                        app.successMsg = data.data.message + '....Redirecting';
+
+                        $timeout(function() {
+                            $location.path('/');
+                        }, 2000);
+
+
+                    } else {
+                        // Create Error message
+                        app.loading = false;
+                        app.errorMsg = data.data.message;
+                    }
+
+                });
+            } else {
+                app.loading = false;
+                app.errorMsg = "Please Ensure the Form is filled properly";
+            }
+
+        };
+        this.checkUsername = function(regData) {
+            User.checkUsername(app.regData).then(function(data) {
+                app.usernameMsg = false;
+                app.usernameInvalid = false;
+                app.checkingusername = true;
 
                 if (data.data.success) {
-                    //Create success
-                    app.loading = false;
-                    app.successMsg = data.data.message + '....Redirecting';
-
-                    $timeout(function() {
-                        $location.path('/');
-                    }, 2000);
-
-
+                    app.checkingusername = false;
+                    app.usernameInvalid = false;
+                    app.usernameMsg = data.data.message;
                 } else {
-                    // Create Error message
-                    app.loading = false;
-                    app.errorMsg = data.data.message;
+                    app.checkingusername = false;
+                    app.usernameInvalid = true;
+                    app.usernameMsg = data.data.message;
                 }
-
             });
-        } else {
-            app.loading = false;
-            app.errorMsg = "Please Ensure the Form is filled properly";
-        }
 
-    };
-    this.checkUsername = function(regData) {
-        User.checkUsername(app.regData).then(function(data) {
-            app.usernameMsg = false;
-            app.usernameInvalid = false;
-            app.checkingusername = true;
+        };
 
-            if (data.data.success) {
-                app.checkingusername = false;
-                app.usernameInvalid = false;
-                app.usernameMsg = data.data.message;
-            } else {
-                app.checkingusername = false;
-                app.usernameInvalid = true;
-                app.usernameMsg = data.data.message;
-            }
-        });
-
-    };
-
-    this.checkEmail = function(regData) {
-        User.checkEmail(app.regData).then(function(data) {
-            app.emailMsg = false;
-            app.emailInvalid = false;
-            app.checkingemail = true;
-
-            if (data.data.success) {
-                app.checkingemail = false;
+        this.checkEmail = function(regData) {
+            User.checkEmail(app.regData).then(function(data) {
+                app.emailMsg = false;
                 app.emailInvalid = false;
-                app.emailMsg = data.data.message;
-            } else {
-                app.checkingemail = false;
-                app.emailInvalid = true;
-                app.emailMsg = data.data.message;
+                app.checkingemail = true;
+
+                if (data.data.success) {
+                    app.checkingemail = false;
+                    app.emailInvalid = false;
+                    app.emailMsg = data.data.message;
+                } else {
+                    app.checkingemail = false;
+                    app.emailInvalid = true;
+                    app.emailMsg = data.data.message;
+                }
+            });
+
+        };
+    })
+    .directive('match', function() {
+        return {
+            restrict: 'A',
+            controller: function($scope) {
+
+                $scope.confirmed = false;
+                $scope.doConfirm = function(values) {
+
+                    values
+                        .forEach(function(ele) {
+                            console.log(ele);
+                            if ($scope.confirm == ele) {
+                                $scope.confirmed = true;
+                            } else {
+                                $scope.confirmed = false;
+
+                            }
+                        });
+                }
+            },
+            link: function(scope, element, attrs) {
+                attrs
+                    .$observe('match', function() {
+                        scope.matches = JSON.parse(attrs.match);
+                        scope.doConfirm(scope.matches);
+                    });
+                scope.$watch('confirm', function() {
+                    scope.matches = JSON.parse(attrs.match);
+                    scope.doConfirm(scope.matches);
+                });
             }
-        });
-
-    };
-
-
-
-})
-
+        }
+    })
 
 .controller('facebookCtrl', function($routeParams, Auth, $location, $window) {
         var app = this;
