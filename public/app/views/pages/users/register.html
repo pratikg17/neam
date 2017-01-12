@@ -24,7 +24,7 @@
     <div ng-class="{'has-success':(regForm.email.$valid && !regForm.email.$pristine) ,'has-error':(!regForm.email.$valid && !regForm.email.$pristine) || (!regForm.email.$valid && regForm.$submitted)}">
         <!--EMAIL-->
         <label>Email:</label>
-        <input class="form-control" type="text" name="email" placeholder="Please Enter Email" ng-model="register.regData.email" ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;" ng-minlength="3" ng-maxlength="25" required>
+        <input class="form-control" type="text" name="email" placeholder="Please Enter Email" ng-model="register.regData.email" ng-minlength="3" ng-maxlength="25" required>
         <p class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.required) || (regForm.$submitted&& regForm.email.$error.required)">This field is required.</p>
         <ul class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.pattern)|| (!regForm.email.$pristine && regForm.email.$error.minlength) || (!regForm.email.$pristine && regForm.email.$error.maxlength)">
             <li>Must Have @</li>
@@ -37,7 +37,7 @@
     <div ng-class="{'has-success':(regForm.username.$valid && !regForm.username.$pristine) ,'has-error':(!regForm.username.$valid && !regForm.username.$pristine) || (!regForm.username.$valid && regForm.$submitted)}">
         <!--USERusername-->
         <label>Username:</label>
-        <input class="form-control" type="text" name="username" placeholder="Please Enter Username" ng-model="register.regData.username" ng-pattern="/^[a-zA-Z0-9\.]*$/" ng-minlength="3" ng-maxlength="25" required>
+        <input class="form-control" type="text" name="username" placeholder="Please Enter Username" ng-model="register.regData.username" ng-pattern="/^[a-zA-Z0-9\.]*$/" ng-minlength="3" ng-maxlength="25" ng-blur="register.checkUsername(regData);" required>
         <p class="help-block" ng-show="(!regForm.username.$pristine && regForm.username.$error.required) || (regForm.$submitted&& regForm.username.$error.required)">This field is required.</p>
         <ul class="help-block" ng-show="(!regForm.username.$pristine && regForm.username.$error.pattern)|| (!regForm.username.$pristine && regForm.username.$error.minlength) || (!regForm.username.$pristine && regForm.username.$error.maxlength)">
 
@@ -48,7 +48,7 @@
 
     <div ng-class="{'has-success':(regForm.password.$valid && !regForm.password.$pristine) ,'has-error':(!regForm.password.$valid && !regForm.password.$pristine) || (!regForm.password.$valid && regForm.$submitted)}">
         <label>Password:</label>
-        <input class="form-control" type="password" name="password" placeholder="Please Enter Password" ng-model="register.regData.password" ng-pattern="/^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])(?=.*?[\W]).{8,35}$/," ng-minlength="8" ng-maxlength="35" required>
+        <input class="form-control" type="password" name="password" placeholder="Please Enter Password" ng-model="register.regData.password" ng-pattern="/^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])(?=.*?[\W]).{8,35}$/" ng-minlength="8" ng-maxlength="35" required>
 
         <p class="help-block" ng-show="(!regForm.password.$pristine && regForm.password.$error.required) || (regForm.$submitted&& regForm.password.$error.required)">This field is required.</p>
         <ul class="help-block" ng-show="(!regForm.password.$pristine && regForm.password.$error.pattern)|| (!regForm.password.$pristine && regForm.password.$error.minlength) || (!regForm.password.$pristine && regForm.password.$error.maxlength)">

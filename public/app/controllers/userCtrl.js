@@ -33,6 +33,20 @@ angular.module("userControllers", ['userServices'])
         }
 
     };
+    this.checkUsername = function(regData) {
+        User.checkUsername(app.regData).then(function(data) {
+            console.log(data);
+        });
+
+    };
+
+    // this.checkEmail = function(regData) {
+    //     User.checkEmail(regData);
+
+    // };
+
+
+
 
 })
 

@@ -58,6 +58,42 @@ module.exports = function(router) {
 
         });
 
+
+    router.post('/checkusername', function(req, res) {
+        User
+            .findOne({ username: req.body.username })
+            .select('username')
+            .exec(function(err, user) {
+                if (err) {
+                    throw err;
+                }
+
+                if (user) {
+                    res.json({ success: false, message: "That Username is already taken!" });
+                } else {
+                    res.json({ success: true, message: "This Username is available!" });
+                }
+            });
+    });
+
+    router.post('/checkemail', function(req, res) {
+        User
+            .findOne({ email: req.body.email })
+            .select('email')
+            .exec(function(err, user) {
+                if (err) {
+                    throw err;
+                }
+
+                if (user) {
+                    res.json({ success: false, message: "That email is already taken!" });
+                } else {
+                    res.json({ success: true, message: "This email is available!" });
+                }
+            });
+    });
+
+
     // USER LOGIN ROUTE http: //localhost:port/api/authenticate
     router.post('/authenticate', function(req, res) {
 
