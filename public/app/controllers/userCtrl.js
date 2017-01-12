@@ -35,16 +35,41 @@ angular.module("userControllers", ['userServices'])
     };
     this.checkUsername = function(regData) {
         User.checkUsername(app.regData).then(function(data) {
-            console.log(data);
+            app.usernameMsg = false;
+            app.usernameInvalid = false;
+            app.checkingusername = true;
+
+            if (data.data.success) {
+                app.checkingusername = false;
+                app.usernameInvalid = false;
+                app.usernameMsg = data.data.message;
+            } else {
+                app.checkingusername = false;
+                app.usernameInvalid = true;
+                app.usernameMsg = data.data.message;
+            }
         });
 
     };
 
-    // this.checkEmail = function(regData) {
-    //     User.checkEmail(regData);
+    this.checkEmail = function(regData) {
+        User.checkEmail(app.regData).then(function(data) {
+            app.emailMsg = false;
+            app.emailInvalid = false;
+            app.checkingemail = true;
 
-    // };
+            if (data.data.success) {
+                app.checkingemail = false;
+                app.emailInvalid = false;
+                app.emailMsg = data.data.message;
+            } else {
+                app.checkingemail = false;
+                app.emailInvalid = true;
+                app.emailMsg = data.data.message;
+            }
+        });
 
+    };
 
 
 

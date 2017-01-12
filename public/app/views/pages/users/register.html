@@ -21,11 +21,15 @@
 
 
 
-    <div ng-class="{'has-success':(regForm.email.$valid && !regForm.email.$pristine) ,'has-error':(!regForm.email.$valid && !regForm.email.$pristine) || (!regForm.email.$valid && regForm.$submitted)}">
+    <div ng-class="{'has-success':(regForm.email.$valid && !regForm.email.$pristine && !register.emailInvalid) ,'has-error':(!regForm.email.$valid && !regForm.email.$pristine) || (!regForm.email.$valid && regForm.$submitted) || register.emailInvalid}">
         <!--EMAIL-->
         <label>Email:</label>
-        <input class="form-control" type="text" name="email" placeholder="Please Enter Email" ng-model="register.regData.email" ng-minlength="3" ng-maxlength="25" required>
+        <input class="form-control" type="text" name="email" placeholder="Please Enter Email" ng-model="register.regData.email" ng-minlength="3" ng-maxlength="25" ng-blur="register.checkEmail(regData);" ng-pattern='/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i'
+            required>
         <p class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.required) || (regForm.$submitted&& regForm.email.$error.required)">This field is required.</p>
+
+        <span ng-show="register.checkingEmail" class="glyphicon glyphicon-repeat"></span>
+        <p class="help-block" ng-show="register.emailMsg  && !regForm.email.$error.required && regForm.email.$valid">{{register.emailMsg}}</p>
         <ul class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.pattern)|| (!regForm.email.$pristine && regForm.email.$error.minlength) || (!regForm.email.$pristine && regForm.email.$error.maxlength)">
             <li>Must Have @</li>
             <li>Should not contain special characters</li>
@@ -34,11 +38,13 @@
 
     </div>
 
-    <div ng-class="{'has-success':(regForm.username.$valid && !regForm.username.$pristine) ,'has-error':(!regForm.username.$valid && !regForm.username.$pristine) || (!regForm.username.$valid && regForm.$submitted)}">
+    <div ng-class="{'has-success':(regForm.username.$valid && !regForm.username.$pristine && !register.usernameInvalid) ,'has-error':(!regForm.username.$valid && !regForm.username.$pristine) || (!regForm.username.$valid && regForm.$submitted) || register.usernameInvalid}">
         <!--USERusername-->
         <label>Username:</label>
-        <input class="form-control" type="text" name="username" placeholder="Please Enter Username" ng-model="register.regData.username" ng-pattern="/^[a-zA-Z0-9\.]*$/" ng-minlength="3" ng-maxlength="25" ng-blur="register.checkUsername(regData);" required>
+        <input class="form-control" type="text" name="username" placeholder="Please Enter Username" ng-model="register.regData.username" ng-pattern="/^([a-zA-Z0-9 _-]+)$/" ng-minlength="3" ng-maxlength="25" ng-blur="register.checkUsername(regData);" required>
         <p class="help-block" ng-show="(!regForm.username.$pristine && regForm.username.$error.required) || (regForm.$submitted&& regForm.username.$error.required)">This field is required.</p>
+        <span ng-show="register.checkingUsername" class="glyphicon glyphicon-repeat"></span>
+        <p class="help-block" ng-show="register.usernameMsg && !regForm.username.$error.required && regForm.username.$valid">{{register.usernameMsg}}</p>
         <ul class="help-block" ng-show="(!regForm.username.$pristine && regForm.username.$error.pattern)|| (!regForm.username.$pristine && regForm.username.$error.minlength) || (!regForm.username.$pristine && regForm.username.$error.maxlength)">
 
             <li>Should not contain special characters</li>
