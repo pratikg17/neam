@@ -78,26 +78,31 @@ angular.module("userControllers", ['userServices'])
 
                 $scope.confirmed = false;
                 $scope.doConfirm = function(values) {
-
+                    console.log("VALUES", values);
                     values
                         .forEach(function(ele) {
                             console.log(ele);
-                            if ($scope.confirm == ele) {
+                            if ($scope.confirm == values) {
+
                                 $scope.confirmed = true;
+
+                                console.log("ELE  TRUE", $scope.confirmed);
                             } else {
                                 $scope.confirmed = false;
+                                console.log("ELSE  FALSE", $scope.confirmed);
 
                             }
                         });
                 }
             },
-            link: function(scope, element, attrs) {
+            link: function(scope, element, attrs, $scope) {
                 attrs
                     .$observe('match', function() {
                         scope.matches = JSON.parse(attrs.match);
                         scope.doConfirm(scope.matches);
                     });
                 scope.$watch('confirm', function() {
+                    console.log($scope.confirm);
                     scope.matches = JSON.parse(attrs.match);
                     scope.doConfirm(scope.matches);
                 });
